@@ -1,0 +1,47 @@
+## copy to /etc/kubernetes
+# sudo vim /etc/kubernetes/manifest/kube-apiserver.yaml
+# --audit-policy-file=/ect/kubernetes/audit-policy.yaml
+# --audit-log-path=/var/logs/k8s-audit/k8s-audit.log
+# --audit-log-maxage=10
+# --audit-log-backup=10
+#- mountPath: /etc/kubernetes/audit-policy.yaml
+#  name: audit-config
+#  readOnly: true
+#- mountPath: /var/logs/k8s-audit
+#  name: audit-log
+#  readOnly: false
+
+# - hostPath:
+#   path: /etc/kubernetes/audit-policy.yaml
+#   type: File
+# name: audit-config
+
+# - hostPath:
+#   path: /var/logs/k8s-audit
+#   type: DirectoryOrCreate
+# name: audit-log
+
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+# Log changes to Namespaces at the RequestResponse level.
+- level: RequestResponse
+  resources:
+  - group: ""
+    resources: ["namespaces"]
+
+# Log pod changes in the audit-test Namespace at Request level
+- level: Request
+  resources:
+  - group: ""
+    resources: ["pods"]
+  namespaces: ["audit-test"]
+
+# Log all ConfigMap and Secret changes at the Metadata level.
+- level: Metadata
+  resources:
+  - group: ""
+    resources: ["secrets", "configmaps"]
+
+# Catch-all - Log all requests at the metadata level.
+- level: Metadata

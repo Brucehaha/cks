@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-apparmor
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/busybox : localhost/k8s-apparmor-example-deny-write
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    command: [ "sh", "-c", "echo 'Hello AppArmor!' && sleep 1h" ]

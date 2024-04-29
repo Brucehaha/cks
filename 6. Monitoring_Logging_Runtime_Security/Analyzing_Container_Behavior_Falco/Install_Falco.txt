@@ -1,0 +1,9 @@
+curl -s https://falco.org/repo/falcosecurity-3672BA8F.asc | sudo apt-key add -
+
+echo "deb https://download.falco.org/packages/deb stable main" | sudo tee -a /etc/apt/sources.list.d/falcosecurity.list
+# must be on worker nodes
+sudo apt-get update
+sudo apt-get install -y falco
+
+falco -r falco-rules.yml -M 45
+falco -list to show available fields and conditions 

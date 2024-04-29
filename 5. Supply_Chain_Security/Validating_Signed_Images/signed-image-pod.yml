@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-image-pod
+spec:
+  restartPolicy: Never
+  containers:
+    - name: busybox
+      image: busybox:1.35.0@sha256:5f0395a8920379b7a83cebdc98341f717699ce6b2ab8139fb677c0af4d9a92cb
+      command: ["sh", "-c", 'echo "Hello, world!"']
